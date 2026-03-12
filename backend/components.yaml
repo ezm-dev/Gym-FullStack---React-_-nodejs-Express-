@@ -1,0 +1,367 @@
+components:
+  schemas:
+    AuthenticationKey:
+      type: object
+      required:
+        - key
+      properties:
+        key:
+          type: string
+          format: uuid
+    UserCredentials:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          example: "m@m.com"
+        password:
+          type: string
+          example: "Abcd1234*"
+    Post:
+      type: object
+      required:
+        - userId
+        - title
+        - content
+      properties:
+        id:
+          type: integer
+          example: 34
+        userId:
+          type: integer
+          example: 10
+        title:
+          type: string
+          example: "Amazing Gym"
+        content:
+          type: string
+          example: "The equipments is pretty good."
+        date:
+          type: string
+          format: date
+          example: "2025-05-20"
+
+    PostWithUser:
+      type: object
+      properties:
+        post:
+          $ref: "#/components/schemas/Post"
+        user:
+          $ref: "#/components/schemas/UserALT"
+
+    BookingInput:
+      type: object
+      required:
+        - userId
+        - sessionId
+      properties:
+        id:
+          type: integer
+          example: 1
+        userId:
+          type: integer
+          example: 13
+        sessionId:
+          type: integer
+          example: 80
+        bookingDate:
+          type: string
+          format: date
+          example: "2025-04-10"
+
+    BookingDetails:
+      type: object
+      properties:
+        booking:
+          $ref: "#/components/schemas/BookingInput"
+        session:
+          $ref: "#/components/schemas/SessionALT"
+        activity:
+          $ref: "#/components/schemas/Activity"
+        location:
+          $ref: "#/components/schemas/Location"
+        user:
+          $ref: "#/components/schemas/UserALT"
+    Session:
+      type: object
+      required:
+        - activityId
+        - trainerId
+        - locationId
+        - date
+        - startTime
+        - duration
+      properties:
+        id:
+          type: number
+          example: 1
+        activityId:
+          type: number
+          example: 3
+        trainerId:
+          type: number
+          example: 2
+        locationId:
+          type: number
+          example: 5
+        date:
+          type: string
+          format: date
+          example: "2025-06-01"
+        startTime:
+          type: string
+          format: time
+          example: "14:00"
+        duration:
+          type: number
+          description: Duration in minutes
+          example: 60
+    
+    SessionALT:
+      type: object
+      required:
+        - id
+        - activityId
+        - trainerId
+        - locationId
+        - date
+        - startTime
+        - duration
+      properties:
+        id:
+          type: integer
+          example: 84
+        activityId:
+          type: integer
+          example: 1
+        trainerId:
+          type: integer
+          example: 3
+        locationId:
+          type: integer
+          example: 1
+        date:
+          type: string
+          format: date-time
+          example: "2025-03-29T14:00:00.000Z"
+        startTime:
+          type: string
+          example: "22:00:00"
+        duration:
+          type: integer
+          example: 30
+    
+    Activity:
+      type: object
+      required:
+        - id
+        - name
+        - description
+        - deleted
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: "Yoga"
+        description:
+          type: string
+          example: "Easy"
+        deleted:
+          type: integer
+          enum: [0, 1]
+          example: 0
+          
+    ActivityEdit:
+      type: object
+      required:
+        - name
+        - description
+        - deleted
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: "Yoga"
+        description:
+          type: string
+          example: "Easy"
+        deleted:
+          type: integer
+          enum: [0, 1]
+          example: 0
+      
+    Location:
+      type: object
+      required:
+        - id
+        - name
+        - address
+        - deleted
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: "Ashgrove"
+        address:
+          type: string
+          example: "Ashgrove"
+        deleted:
+          type: integer
+          enum: [0, 1]
+          example: 0
+   
+    UserALT:
+      type: object
+      required:
+        - firstName
+        - lastName
+        - email
+        - password
+        - role
+        - deleted
+       
+      properties:
+        id:
+          type: integer
+          example: 3
+        firstName:
+          type: string
+          example: "Mia"
+        lastName:
+          type: string
+          example: "Ryan"
+        email:
+          type: string
+          format: email
+          example: "mia@t.com"
+        password:
+          type: string
+          example: "Abcd1234*"
+        role:
+          type: string
+          enum: [trainer, admin, member]
+          example: "member"
+        deleted:
+          type: integer
+          enum: [0, 1]
+          example: 0
+
+    User:
+      type: object
+      required:
+        - firstName
+        - lastName
+        - email
+        - password
+        - role
+        - deleted
+        - authenticationKey
+        
+      properties:
+        id:
+          type: integer
+          example: 3
+        firstName:
+          type: string
+          example: "Mia"
+        lastName:
+          type: string
+          example: "Ryan"
+        email:
+          type: string
+          format: email
+          example: "mia@t.com"
+        password:
+          type: string
+          example: "Abcd1234*"
+        role:
+          type: string
+          enum: [trainer, admin, member]
+          example: "trainer"
+        deleted:
+          type: integer
+          enum: [0, 1]
+          example: 0
+        authenticationKey:
+          type: string
+          format: uuid
+    
+               
+  responses:
+    Deleted:
+      description: Item deleted
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message: 
+                type: string
+                example: "Item deleted"
+    Updated:
+      description: An item has been updated
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message: 
+                type: string
+                example: "New item updated"
+    LoginSuccessful:
+      description: Login successful
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/AuthenticationKey"
+    Created:
+      description: A new item has been created
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - id
+              - message
+            properties:
+              id:
+                type: number
+                example: 1
+              message: 
+                type: string
+                example: "New item created"
+    NotFound:
+      description: Item not found 
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - message
+            properties:
+              message:
+                type: string
+                example: "The requested item could not be found"
+    Error:
+      description: An error has occurred 
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - message
+            properties:
+              message:
+                type: string
+                example: "Error processing request"
+              errors:
+                type: array
